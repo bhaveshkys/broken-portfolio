@@ -13,6 +13,12 @@ import {
   CyclingTextProps 
 } from './types';
 
+// Import project images properly for Vite
+import profiledImg from './assets/projectImages/profiled.png';
+import lexievoImg from './assets/projectImages/lexievo.png';
+import brooochImg from './assets/projectImages/brooochAndCo.png';
+import edvantaImg from './assets/projectImages/edvanta.png';
+
 const cssProblems: CSSChallenge[] = [
   {
     section: 'hero',
@@ -130,12 +136,13 @@ function App() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
 
-  // Strapi API functions
+  // Strapi API functions with better error handling and CORS handling
   const fetchAPI = async (path: string, options: RequestInit = {}) => {
     const defaultOptions = {
       headers: {
         'Content-Type': 'application/json',
       },
+      mode: 'cors' as RequestMode,
     };
     
     const mergedOptions = {
@@ -147,13 +154,19 @@ function App() {
       },
     };
 
-    const response = await fetch(`https://upbeat-fish-9e996a6b3b.strapiapp.com/api${path}`, mergedOptions);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await fetch(`https://upbeat-fish-9e996a6b3b.strapiapp.com/api${path}`, mergedOptions);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('Fetch error:', error);
+      // Return empty response to prevent app crash
+      return { data: [], meta: { pagination: { start: 0, limit: 0, total: 0 } } };
     }
-    
-    return response.json();
   };
 
   const transformStrapiPost = (strapiPost: StrapiPost): BlogPost => {
@@ -665,7 +678,7 @@ function App() {
                   title: 'ProfilED',
                   description: 'FullStack gamified AI-driven assessments & trainings to help you understand strengths, close skill gaps, and unlock your future potential.',
                   tech: ['Vue.js', 'MongoDB', 'Vapi.ai', 'LangChain', 'Node.js', 'Express'],
-                  image: '/src/assets/projectImages/profiled.png',
+                  image: profiledImg,
                   hasLiveDemo: true,
                   liveUrl: 'https://profiled.app/',
                   hasGithub: false,
@@ -675,7 +688,7 @@ function App() {
                   title: 'LexiEvo',
                   description: 'FullStack Platform for lawyers looking to have a virtual AI receptionist that takes all calls and then classifies them like new case, old case or misc. Platform shows who called, what was the enquiry and can transfer calls to the lawyer if needed. Made website, dashboard and server.',
                   tech: ['Next.js', 'React.js', 'MongoDB', 'Vapi', 'Node.js', 'Express'],
-                  image: '/src/assets/projectImages/lexievo.png',
+                  image: lexievoImg,
                   hasLiveDemo: true,
                   liveUrl: 'https://www.lexievo.com/',
                   hasGithub: true,
@@ -687,7 +700,7 @@ function App() {
                   title: 'Brooch&Co',
                   description: 'E-commerce website built with Next.js and Shopify headless, fully mobile responsive with modern design and seamless shopping experience.',
                   tech: ['Next.js', 'Shopify Headless'],
-                  image: '/src/assets/projectImages/brooochAndCo.png',
+                  image: brooochImg,
                   hasLiveDemo: true,
                   liveUrl: 'https://www.broochandco.in/',
                   hasGithub: false,
@@ -697,7 +710,7 @@ function App() {
                   title: 'Edvanta Company Website',
                   description: 'Built with a team of 4 people. Main company website with really fast blog loading thanks to custom logic - each time a new blog is added in Notion, blog is converted to MD and then website is rebuilt.',
                   tech: ['Nuxt.js', 'Node.js'],
-                  image: '/src/assets/projectImages/edvanta.png',
+                  image: edvantaImg,
                   hasLiveDemo: true,
                   liveUrl: 'https://edvanta.com/',
                   hasGithub: false,
