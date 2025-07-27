@@ -891,14 +891,16 @@ function App() {
               
               <div className="space-y-4">
                 {[
-                  { icon: Mail, label: 'john.doe@email.com', href: 'mailto:john.doe@email.com' },
-                  { icon: Linkedin, label: 'LinkedIn Profile', href: '#' },
-                  { icon: Github, label: 'GitHub Profile', href: '#' },
-                  { icon: Twitter, label: '@johndoe', href: '#' }
+                  { icon: Mail, label: 'bhaveshsharma8@gmail.com', href: 'mailto:bhaveshsharma8@gmail.com' },
+                  { icon: Linkedin, label: 'LinkedIn Profile', href: 'https://www.linkedin.com/in/bhavesh-sharma-57755a214/' },
+                  { icon: Github, label: 'GitHub Profile', href: 'https://github.com/bhaveshkys' },
+                  { icon: Twitter, label: '@bhaveshsharma', href: '#' }
                 ].map((contact, index) => (
                   <a
                     key={index}
                     href={contact.href}
+                    target={contact.href.startsWith('mailto:') ? '_self' : '_blank'}
+                    rel={contact.href.startsWith('mailto:') ? '' : 'noopener noreferrer'}
                     className={`flex items-center space-x-3 transition-all duration-300 hover:text-blue-600 ${
                       isChaos && !fixedSections.contact 
                         ? 'animate-pulse' 
