@@ -44,3 +44,34 @@
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0; }
 }
+.dog {
+  width: 64px;
+  height: 64px;
+  background: url('../../../public/sprites/Labrador.png') no-repeat;
+  background-size: 512px 192px; /* full sheet size */
+  animation: walk 1s steps(8) infinite, moveAndTurn 20s linear infinite;
+  
+}
+
+@keyframes walk {
+  from { background-position: 0 0; }
+  to   { background-position: -512px 0; } /* only shift horizontally through the frames */
+}
+
+@keyframes moveAndTurn {
+  0% { 
+    transform: translateX(0px) scaleX(1);
+  }
+  45% { 
+    transform: translateX(calc(100vw - 900px)) scaleX(1);
+  }
+  50% { 
+    transform: translateX(calc(100vw - 1000px)) scaleX(-1);
+  }
+  95% { 
+    transform: translateX(0px) scaleX(-1);
+  }
+  100% { 
+    transform: translateX(0px) scaleX(1);
+  }
+}
